@@ -18,8 +18,10 @@ public class SplashScreen extends BaseScreen {
      * This method is used to wait for the splash screen logo to disappear.
      */
     public void waitLogoAppears() {
-        this.waitForElementToAppear(imgLogo);
-        System.out.println("Logo has appeared.");
-//        logs.info("Splash screen logo has disappeared.");
+        if (waitForElementToAppear(imgLogo)) {
+            System.out.println("Splash screen logo is visible, proceeding to wait for it to disappear.");
+        } else {
+            System.out.println("Splash screen logo is not visible, cannot proceed.");
+        }
     }
 }
