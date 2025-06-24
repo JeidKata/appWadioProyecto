@@ -1,14 +1,15 @@
 package com.globant.appWadio.utils;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.support.PageFactory;
 
 public class BaseScreen {
 
-    public AppiumDriver appiumDriver;
+    public AppiumDriver driver;
 
-    public BaseScreen(AppiumDriver appiumDriver){
-        this.appiumDriver = appiumDriver;
-        PageFactory.initElements(appiumDriver, this);
+    public BaseScreen(AppiumDriver driver){
+        this.driver = driver;
+        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 }
