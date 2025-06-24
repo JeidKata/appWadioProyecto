@@ -1,6 +1,5 @@
 package com.globant.appWadio.utils;
 
-//import org.apache.log4j.Logger;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.TimeoutException;
@@ -16,24 +15,22 @@ public class BaseScreen {
     public AppiumDriver driver;
     protected static final int TIMEOUT = 10;
     protected WebDriverWait wait;
-//    protected Logger logs;
 
     public BaseScreen(AppiumDriver driver){
         this.driver = driver;
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-//        this.logs = Logger.getLogger(this.getClass().getName());
         this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(TIMEOUT));
     }
 
     /**
      * This method is used to wait for an element to appear.
      */
-    public void waitForElementToAppear(WebElement element) {
+    public boolean waitForElementToAppear(WebElement element) {
         try {
-            this.wait.until(ExpectedConditions.visibilityOf(element));
-//            logs.info("Element has disappeared: " + element);
-        } catch (TimeoutException e) {
-//            logs.error("Element did not disappear in time: " + element, e);
+            WebElement element1 = wait.until(ExpectedConditions.visibilityOf(element));
+            return element1 != null;
+        } catch (Exception e) {
+            return false;
         }
     }
 }
