@@ -36,7 +36,7 @@ public class SignUpTest extends BaseTest {
         signUp.tapOnSignUpTab();
         signUp.tapOnSignUpButton();
 
-        softAssert.assertEquals(signUp.getAlertMessage(), "You successfully signed up", "The alert message is not as expected.");
+        softAssert.assertEquals(signUp.getAlertMessage(), "You successfully signed up!", "The alert message is not as expected.");
         softAssert.assertAll("Look at the soft assertion results");
     }
 }
