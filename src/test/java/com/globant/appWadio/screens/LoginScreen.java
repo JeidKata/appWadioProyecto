@@ -34,6 +34,9 @@ public class LoginScreen extends BaseScreen {
     @AndroidFindBy(className = "android.widget.Button")
     private WebElement btnAlert;
 
+    @AndroidFindBy(uiAutomator = "className(\"android.view.ViewGroup\").instance(17)")
+    private WebElement btnLogin;
+
     private String randomEmail;
     private String randomPassword;
 
@@ -77,6 +80,11 @@ public class LoginScreen extends BaseScreen {
         randomEmail = "test" + System.currentTimeMillis() + "@example.com";
         randomPassword = "password" + System.currentTimeMillis();
         inputSignUpDetails(randomEmail, randomPassword);
+    }
+
+    public void tapOnLoginButton() {
+        randonInput();
+        btnLogin.click();
     }
 
     /**
