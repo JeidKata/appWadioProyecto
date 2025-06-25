@@ -59,16 +59,23 @@ public class LoginScreen extends BaseScreen {
     /**
      * This method is used to enter the email, password and confirm the password in the sign-up form.
      */
-    public void inputSignUpDetails(String email, String password) {
-        if (waitForElementToAppear(txtInputEmail)) {
-            System.out.println("Email input field is visible, proceeding to enter email.");
-            txtInputEmail.sendKeys(email);
-            System.out.println("Proceeding to enter password.");
-            txtInputPassword.sendKeys(password);
-            System.out.println("Proceeding to enter repeat password.");
-            txtInputRepeatPassword.sendKeys(password);
-        } else {
-            System.out.println("Input fields is not visible, cannot proceed.");
+    public void inputDetails(String email, String password) {
+        try{
+            if (waitForElementToAppear(txtInputRepeatPassword)) {
+                System.out.println("Proceeding to enter email.");
+                txtInputEmail.sendKeys(email);
+                System.out.println("Proceeding to enter password.");
+                txtInputPassword.sendKeys(password);
+                System.out.println("Proceeding to enter repeat password.");
+                txtInputRepeatPassword.sendKeys(password);
+            } else{
+                System.out.println("Proceeding to enter email.");
+                txtInputEmail.sendKeys(email);
+                System.out.println("Proceeding to enter password.");
+                txtInputPassword.sendKeys(password);
+            }
+        }catch (Exception e){
+            System.out.println("An error occurred while entering details: " + e.getMessage());
         }
     }
 
@@ -79,7 +86,7 @@ public class LoginScreen extends BaseScreen {
     public void randonInput(){
         randomEmail = "test" + System.currentTimeMillis() + "@example.com";
         randomPassword = "password" + System.currentTimeMillis();
-        inputSignUpDetails(randomEmail, randomPassword);
+        inputDetails(randomEmail, randomPassword);
     }
 
     public void tapOnLoginButton() {
