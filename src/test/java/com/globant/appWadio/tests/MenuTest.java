@@ -2,6 +2,7 @@ package com.globant.appWadio.tests;
 
 import com.globant.appWadio.screens.SplashScreen;
 import com.globant.appWadio.screens.TabMenu;
+import com.globant.appWadio.screens.WebviewScreen;
 import com.globant.appWadio.utils.BaseTest;
 import org.testng.annotations.Test;
 
@@ -12,7 +13,8 @@ public class MenuTest extends BaseTest {
         SplashScreen splashScreen = new SplashScreen(appiumDriver);
         TabMenu tabMenu = new TabMenu(appiumDriver);
         splashScreen.waitLogoAppears();
-        tabMenu.tapOnWebviewTab();
+        WebviewScreen webviewScreen = tabMenu.tapOnWebviewTab();
+        webviewScreen.waitForWebviewToLoad();
         tabMenu.tapOnLoginTab();
         tabMenu.tapOnFormsTab();
         tabMenu.tapOnSwipeTab();
