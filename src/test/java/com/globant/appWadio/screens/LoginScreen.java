@@ -25,16 +25,13 @@ public class LoginScreen extends BaseScreen {
     @AndroidFindBy(uiAutomator = "resourceId(\"android:id/alertTitle\")")
     private WebElement alertTitle;
 
-    @AndroidFindBy(uiAutomator = "resourceId(\"android:id/message\")")
-    private WebElement lblAlertMessage;
-
     @AndroidFindBy(id ="android:id/message")
-    private WebElement lblAlertMessage2;
+    private WebElement lblAlertMessage;
 
     @AndroidFindBy(className = "android.widget.Button")
     private WebElement btnAlert;
 
-    @AndroidFindBy(uiAutomator = "className(\"android.view.ViewGroup\").instance(17)")
+    @AndroidFindBy(uiAutomator = "className(\"android.view.ViewGroup\").instance(16)")
     private WebElement btnLogin;
 
     private String randomEmail;
@@ -89,6 +86,9 @@ public class LoginScreen extends BaseScreen {
         inputDetails(randomEmail, randomPassword);
     }
 
+    /**
+     * This method is used to tap on the "Login" button.
+     */
     public void tapOnLoginButton() {
         randonInput();
         btnLogin.click();
