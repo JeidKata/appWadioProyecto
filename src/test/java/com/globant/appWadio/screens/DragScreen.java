@@ -7,5 +7,4 @@ public class DragScreen extends BaseScreen {
     public DragScreen(AppiumDriver driver) {
         super(driver);
     }
-
 }

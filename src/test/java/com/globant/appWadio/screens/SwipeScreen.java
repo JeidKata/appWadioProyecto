@@ -8,4 +8,19 @@ public class SwipeScreen extends BaseScreen {
         super(driver);
     }
 
+    /**
+     * This method is used to swipe left on the screen.
+     */
+    public void swipeLeft() {
+        // Implement swipe left logic here
+        System.out.println("Swiping left on the screen.");
+    }
+
+    /**
+     * This method is used to swipe right on the screen.
+     */
+    public void swipeRight() {
+        // Implement swipe right logic here
+        System.out.println("Swiping right on the screen.");
+    }
 }
