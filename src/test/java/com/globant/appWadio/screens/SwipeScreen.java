@@ -27,6 +27,7 @@ public class SwipeScreen extends BaseScreen {
     }
 
     public String getLblLastCard() {
+        waitForElementToAppear(lblCompatible);
         return lblCompatible.getDomAttribute("text");
     }
 
@@ -35,11 +36,10 @@ public class SwipeScreen extends BaseScreen {
      */
     public void swipeFromRightToLeft() {
         waitForElementToAppear(lblSwipeHorizontal);
-        if (nextCardElements.isDisplayed() && actualCardElements.isDisplayed()) {
+        do{
             swipeHorizontal(nextCardElements, actualCardElements);
             System.out.println("Swiped from right to left successfully.");
-        }else {
-            System.out.println("No more cards to swipe left.");
         }
+        while (nextCardElements.isDisplayed());
     }
 }
