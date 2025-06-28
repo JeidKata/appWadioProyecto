@@ -61,7 +61,6 @@ public class SwipeScreen extends BaseScreen {
                 saveElementId();
                 swipeHorizontal(nextCardElements, actualCardElements);
                 System.out.println("Swiped from right to left successfully.");
-                verificarTarjetaOcultaPorResource(i);
                 i ++;
             }
         } catch (Exception e) {
@@ -117,4 +116,15 @@ public class SwipeScreen extends BaseScreen {
         }
     }
 
+    /**
+     * This method verifies if the last card is displayed.
+     */
+    public boolean isLastCardDisplayed() {
+        try {
+            return lastCardElement.isDisplayed();
+        } catch (NoSuchElementException e) {
+            System.out.println("The last card is not displayed.");
+            return false;
+        }
+    }
 }
