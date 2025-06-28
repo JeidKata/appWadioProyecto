@@ -1,11 +1,12 @@
 package com.globant.appWadio.screens;
 
 import com.globant.appWadio.utils.BaseScreen;
+import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
-import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-
+import org.openqa.selenium.remote.RemoteWebElement;
 import java.util.List;
 
 public class SwipeScreen extends BaseScreen {
@@ -28,13 +29,13 @@ public class SwipeScreen extends BaseScreen {
     @AndroidFindBy(uiAutomator = "text(\"You found me!!!\")")
     private WebElement lblYouFoundMe;
 
-    @AndroidFindBy(id = "__CAROUSEL_ITEM_0_READY__")
-    private WebElement carouselItem;
+    private List<String> textActualCard;
 
-    private List<WebElement> carouselItems;
+    private String elementId;
 
     public SwipeScreen(AppiumDriver driver) {
         super(driver);
+        this.textActualCard = new java.util.ArrayList<>();
     }
 
     public String getLblLastCard() {
@@ -55,11 +56,12 @@ public class SwipeScreen extends BaseScreen {
             waitForElementToAppear(lblSwipeHorizontal);
         try{
             int i = 0;
-            while (nextCardElements.isDisplayed()) {
+            while (isElementVisible(nextCardElements)) {
                 System.out.println("\tCard: " + (i+1) + " displayed ");
+                saveElementId();
                 swipeHorizontal(nextCardElements, actualCardElements);
-                getCurrentCard();
                 System.out.println("Swiped from right to left successfully.");
+                verificarTarjetaOcultaPorResource(i);
                 i ++;
             }
         } catch (Exception e) {
@@ -67,11 +69,76 @@ public class SwipeScreen extends BaseScreen {
         }
     }
 
-    public int getCurrentCard() {
-        waitForElementToAppear(carouselItem);
-        String resourceId = carouselItem.getDomAttribute("resource-id");
-        WebElement newCarrouselItem = driver.findElement(By.id(resourceId));
-        carouselItems.add(newCarrouselItem);
-        return carouselItems.size();
+    public void saveElementId() {
+        try {
+            if (isElementVisible(actualCardElements)) {
+                String elementId = ((RemoteWebElement) actualCardElements).getId();
+                textActualCard.add(elementId);
+                isCardHidden();
+            } else {
+                System.out.println("The element is not visible.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error retrieving element ID: " + e.getMessage());
+        }
     }
+//
+//    public void getTextCurrentCard() {
+//        try {
+//            if (isElementVisible(actualCardElements)) {
+//                String elementId = ((RemoteWebElement) actualCardElements).getId();
+//                textActualCard.add(elementId);
+//                System.out.println(textActualCard);
+//                System.out.println("Current card elementId: " + elementId);
+//            } else {
+//                textActualCard.get(textActualCard.indexOf(actualCardElements.getDomAttribute("elementId"))-1);
+//                System.out.println("The current card is not visible.");
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Error. "+ e);
+//        }
+//    }
+
+    /**
+     * Este metodo se utiliza paraque compruebe que la tarjeta antigua está oculta.
+     */
+    public void isCardHidden() {
+        try{
+           if(isElementVisible(actualCardElements)) {
+               for (int i = 0; i < textActualCard.size(); i++) {
+                   String id = textActualCard.get(i);
+                   if (i == textActualCard.size() - 2) {
+                       System.out.println("La carta con el ID " + id + " está oculta.");
+                   }
+               }
+           }
+        }catch (Exception e) {
+            System.out.println("Error checking if card is hidden: " + e.getMessage());
+        }
+    }
+
+    public void verificarTarjetaOcultaPorResource(int indice) {
+        try {
+            // Construir patrón del resource-id esperado
+            String regex = "__CAROUSEL_ITEM_" + indice + "_READY__";
+
+            // Buscar elemento usando resourceIdMatches
+            WebElement tarjeta = driver.findElement(AppiumBy.androidUIAutomator(
+                    "new UiSelector().resourceIdMatches(\".*" + regex + "\")"
+            ));
+
+            // Verificar visibilidad
+            if (tarjeta.isDisplayed()) {
+                System.out.println("🔎 La tarjeta #" + (indice+1) + " está visible.");
+            } else {
+                System.out.println("🫥 La tarjeta #" + (indice+1) + " está oculta.");
+            }
+
+        } catch (NoSuchElementException e) {
+            // Si no se encuentra el elemento, asumimos que está oculto o no cargado
+            System.out.println("🚫 La tarjeta #" + (indice+1) + " no se encuentra en pantalla (posiblemente oculta).");
+        }
+    }
+
+
 }
