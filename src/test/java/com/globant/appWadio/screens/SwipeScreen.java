@@ -1,9 +1,11 @@
 package com.globant.appWadio.screens;
 
 import com.globant.appWadio.utils.BaseScreen;
+import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class SwipeScreen extends BaseScreen {
 
@@ -37,9 +39,13 @@ public class SwipeScreen extends BaseScreen {
     public void swipeFromRightToLeft() {
         waitForElementToAppear(lblSwipeHorizontal);
         do{
-            swipeHorizontal(nextCardElements, actualCardElements);
-            System.out.println("Swiped from right to left successfully.");
-        }
-        while (nextCardElements.isDisplayed());
+            wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.androidUIAutomator("new UiSelector().text(\"COMPATIBLE\")")));
+            if(lblCompatible.isDisplayed()) {
+                break;
+            }else{
+                swipeHorizontal(nextCardElements, actualCardElements);
+                System.out.println("Swiped from right to left successfully.");
+            }
+        }while (nextCardElements.isDisplayed());
     }
 }
