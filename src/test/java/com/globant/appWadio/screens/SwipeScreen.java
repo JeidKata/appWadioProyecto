@@ -1,11 +1,12 @@
 package com.globant.appWadio.screens;
 
 import com.globant.appWadio.utils.BaseScreen;
-import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.List;
 
 public class SwipeScreen extends BaseScreen {
 
@@ -26,6 +27,11 @@ public class SwipeScreen extends BaseScreen {
 
     @AndroidFindBy(uiAutomator = "text(\"You found me!!!\")")
     private WebElement lblYouFoundMe;
+
+    @AndroidFindBy(id = "__CAROUSEL_ITEM_0_READY__")
+    private WebElement carouselItem;
+
+    private List<WebElement> carouselItems;
 
     public SwipeScreen(AppiumDriver driver) {
         super(driver);
@@ -48,12 +54,24 @@ public class SwipeScreen extends BaseScreen {
     public void swipeFromRightToLeft() {
             waitForElementToAppear(lblSwipeHorizontal);
         try{
+            int i = 0;
             while (nextCardElements.isDisplayed()) {
+                System.out.println("\tCard: " + (i+1) + " displayed ");
                 swipeHorizontal(nextCardElements, actualCardElements);
+                getCurrentCard();
                 System.out.println("Swiped from right to left successfully.");
+                i ++;
             }
         } catch (Exception e) {
             System.out.println("No more cards to swipe.");
         }
+    }
+
+    public int getCurrentCard() {
+        waitForElementToAppear(carouselItem);
+        String resourceId = carouselItem.getDomAttribute("resource-id");
+        WebElement newCarrouselItem = driver.findElement(By.id(resourceId));
+        carouselItems.add(newCarrouselItem);
+        return carouselItems.size();
     }
 }
