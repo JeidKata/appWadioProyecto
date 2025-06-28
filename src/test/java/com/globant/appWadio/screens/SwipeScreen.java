@@ -117,28 +117,4 @@ public class SwipeScreen extends BaseScreen {
         }
     }
 
-    public void verificarTarjetaOcultaPorResource(int indice) {
-        try {
-            // Construir patrón del resource-id esperado
-            String regex = "__CAROUSEL_ITEM_" + indice + "_READY__";
-
-            // Buscar elemento usando resourceIdMatches
-            WebElement tarjeta = driver.findElement(AppiumBy.androidUIAutomator(
-                    "new UiSelector().resourceIdMatches(\".*" + regex + "\")"
-            ));
-
-            // Verificar visibilidad
-            if (tarjeta.isDisplayed()) {
-                System.out.println("🔎 La tarjeta #" + (indice+1) + " está visible.");
-            } else {
-                System.out.println("🫥 La tarjeta #" + (indice+1) + " está oculta.");
-            }
-
-        } catch (NoSuchElementException e) {
-            // Si no se encuentra el elemento, asumimos que está oculto o no cargado
-            System.out.println("🚫 La tarjeta #" + (indice+1) + " no se encuentra en pantalla (posiblemente oculta).");
-        }
-    }
-
-
 }
