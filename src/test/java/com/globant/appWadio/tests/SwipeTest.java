@@ -12,7 +12,8 @@ public class SwipeTest extends BaseTest {
         TabMenu menu = new TabMenu(appiumDriver);
         SwipeScreen swipeScreen = menu.tapOnSwipeTab();
         swipeScreen.swipeFromRightToLeft();
-        softAssert.assertEquals(swipeScreen.getLblLastCard(),"COMPATIBLE");
+        softAssert.assertEquals(swipeScreen.getLblLastCard(),
+                "COMPATIBLE", "The last card label is not as expected.");
         System.out.println("Swipe left test executed successfully.");
     }
 }

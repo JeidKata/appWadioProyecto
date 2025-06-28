@@ -24,6 +24,9 @@ public class SwipeScreen extends BaseScreen {
     @AndroidFindBy(uiAutomator = "text(\"COMPATIBLE\")")
     private WebElement lblCompatible;
 
+    @AndroidFindBy(uiAutomator = "text(\"You found me!!!\")")
+    private WebElement lblYouFoundMe;
+
     public SwipeScreen(AppiumDriver driver) {
         super(driver);
     }
@@ -33,19 +36,24 @@ public class SwipeScreen extends BaseScreen {
         return lblCompatible.getDomAttribute("text");
     }
 
+    public String getLblYouFoundMe() {
+        waitForElementToAppear(lblYouFoundMe);
+        return lblYouFoundMe.getDomAttribute("text");
+    }
+
     /**
      * This method is used to swipe horizontally.
+     * It will swipe from right to left until the next card is not displayed.
      */
     public void swipeFromRightToLeft() {
-        waitForElementToAppear(lblSwipeHorizontal);
-        do{
-            wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.androidUIAutomator("new UiSelector().text(\"COMPATIBLE\")")));
-            if(lblCompatible.isDisplayed()) {
-                break;
-            }else{
+            waitForElementToAppear(lblSwipeHorizontal);
+        try{
+            while (nextCardElements.isDisplayed()) {
                 swipeHorizontal(nextCardElements, actualCardElements);
                 System.out.println("Swiped from right to left successfully.");
             }
-        }while (nextCardElements.isDisplayed());
+        } catch (Exception e) {
+            System.out.println("No more cards to swipe.");
+        }
     }
 }
