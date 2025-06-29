@@ -4,6 +4,9 @@
     <test name="Wdio app Tests">
         <classes>
             <class name="com.globant.appWadio.tests.MenuTest" />
+            <class name="com.globant.appWadio.tests.SignUpTest" />
+            <class name="com.globant.appWadio.tests.LoginTest" />
+            <class name="com.globant.appWadio.tests.SwipeTest" />
         </classes>
     </test>
 </suite>
