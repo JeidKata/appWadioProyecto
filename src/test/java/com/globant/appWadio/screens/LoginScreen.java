@@ -34,6 +34,9 @@ public class LoginScreen extends BaseScreen {
     @AndroidFindBy(uiAutomator = "className(\"android.view.ViewGroup\").instance(16)")
     private WebElement btnLogin;
 
+    @AndroidFindBy(uiAutomator = "text(\"Login / Sign up Form\")")
+    private WebElement lblLoginForm;
+
     private String randomEmail;
     private String randomPassword;
 
@@ -117,6 +120,28 @@ public class LoginScreen extends BaseScreen {
             System.out.println("Alert message not found.");
             return null;
         }
+    }
+
+    /**
+     * This method is used to wait for the login form to load.
+     */
+    public void waitForLoginFormToLoad() {
+        try {
+            if (waitForElementToAppear(lblLoginForm)) {
+                System.out.println("Login form is loaded and ready.");
+            } else {
+                System.out.println("Login form did not load successfully.");
+            }
+        } catch (Exception e) {
+            System.out.println("Login form is not visible: " + e.getMessage());
+        }
+    }
+
+    /**
+     * This method is used to wait for the login screen to load.
+     */
+    public boolean isLoginFormVisible() {
+        return isElementVisible(lblLoginForm);
     }
 
 }

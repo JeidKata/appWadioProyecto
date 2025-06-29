@@ -7,10 +7,10 @@ import org.openqa.selenium.WebElement;
 
 public class WebviewScreen extends BaseScreen {
 
-    @AndroidFindBy(uiAutomator = "className(\"android.view.ViewGroup\").instance(6)")
-    private WebElement webviewElement;
+    @AndroidFindBy(uiAutomator = "text(\"Next-gen browser and mobile automation test framework for Node.js\")")
+    private WebElement lblWebview;
 
-    @AndroidFindBy(accessibility = "Toggle navigation bar")
+    @AndroidFindBy(uiAutomator = "text(\"Toggle navigation bar")
     private WebElement btnToggleNavigationBar;
 
     @AndroidFindBy(uiAutomator = "text(\"openjs_foundation-logo-horizontal-color-dark_background\")")
@@ -25,11 +25,22 @@ public class WebviewScreen extends BaseScreen {
      * It checks for the presence of a specific element that indicates the Webview is ready.
      */
     public void waitForWebviewToLoad() {
-        if (waitForElementToAppear(webviewElement)) {
-            System.out.println("Webview is loaded and ready.");
-        } else {
-            System.out.println("Webview did not load successfully.");
-        }
+        String message = (waitForElementToAppear(lblWebview))?
+                "Webview loaded successfully." :
+                "Webview did not load successfully.";
+        System.out.println(message);
     }
 
+    /**
+     * This method is used to check if the Webview logo is visible.
+     * It returns true if the logo is visible, otherwise false.
+     */
+    public boolean isWebviewTitleVisible() {
+        try {
+            return waitForElementToAppear(lblWebview);
+        } catch (Exception e) {
+            System.out.println("Webview title is not visible: " + e.getMessage());
+            return false;
+        }
+    }
 }

@@ -37,11 +37,38 @@ public class SwipeScreen extends BaseScreen {
         this.cardElementIds = new ArrayList<>();
     }
 
+    /**
+     * This method is used to wait for the Swipe screen to load.
+     * It checks for the presence of a specific element that indicates the Swipe screen is ready.
+     */
+    public void waitForSwipeToLoad() {
+        if (waitForElementToAppear(lblSwipeHorizontal)) {
+            System.out.println("Swipe screen loaded successfully.");
+        } else {
+            System.out.println("Swipe screen did not load successfully.");
+        }
+    }
+
+    /**
+     * This method checks if the Swipe screen is visible.
+     */
+    public boolean isSwipeScreenVisible() {
+        return isElementVisible(lblSwipeHorizontal);
+    }
+
+    /**
+     * This method is used to wait for the Swipe screen to load.
+     * It checks for the presence of a specific element that indicates the Swipe screen is ready.
+     */
     public String getLblLastCard() {
         waitForElementToAppear(lblCompatible);
         return lblCompatible.getDomAttribute("text");
     }
 
+    /**
+     * This method retrieves the text of the "You found me!!!" label.
+     * It waits for the element to appear before getting its text.
+     */
     public String getLblYouFoundMe() {
         waitForElementToAppear(lblYouFoundMe);
         return lblYouFoundMe.getDomAttribute("text");
@@ -115,6 +142,9 @@ public class SwipeScreen extends BaseScreen {
         }
     }
 
+    /**
+     * This method swipes from the bottom to the top until the "You found me!!!" label is visible.
+     */
     public void swipeBottomToTop() {
         while (!isElementVisible(lblYouFoundMe)) {
             swipeVertical();
