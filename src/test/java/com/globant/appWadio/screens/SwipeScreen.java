@@ -60,12 +60,8 @@ public class SwipeScreen extends BaseScreen {
                 saveElementId();
                 swipeHorizontal(nextCardElements, actualCardElements);
                 i ++;
-                if(isElementVisible(nextCardElements)){
-                    System.out.println("Swiped from right to left successfully.");
-                }else {
-                    System.out.println("This is the last card.");
-                    break;
-                }
+                String s = (isElementVisible(nextCardElements)) ? "Successful sliding." : "This is the last card.";
+                System.out.println(s);
             }
         } catch (Exception e) {
             System.out.println("No more cards to swipe.");
@@ -122,7 +118,8 @@ public class SwipeScreen extends BaseScreen {
     public void swipeBottomToTop() {
         while (!isElementVisible(lblYouFoundMe)) {
             swipeVertical();
-            System.out.println("Swiped from bottom to top successfully.");
+            String message = isElementVisible(lblYouFoundMe) ? "The robot's message was found." : "Looking for the robot's message.";
+            System.out.println(message);
         }
     }
 }
