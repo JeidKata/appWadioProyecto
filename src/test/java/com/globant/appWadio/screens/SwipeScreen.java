@@ -1,12 +1,13 @@
 package com.globant.appWadio.screens;
 
 import com.globant.appWadio.utils.BaseScreen;
-import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class SwipeScreen extends BaseScreen {
@@ -29,13 +30,11 @@ public class SwipeScreen extends BaseScreen {
     @AndroidFindBy(uiAutomator = "text(\"You found me!!!\")")
     private WebElement lblYouFoundMe;
 
-    private List<String> textActualCard;
-
-    private String elementId;
+    private final List<String> cardElementIds;
 
     public SwipeScreen(AppiumDriver driver) {
         super(driver);
-        this.textActualCard = new java.util.ArrayList<>();
+        this.cardElementIds = new ArrayList<>();
     }
 
     public String getLblLastCard() {
@@ -52,7 +51,7 @@ public class SwipeScreen extends BaseScreen {
      * This method is used to swipe horizontally.
      * It will swipe from right to left until the next card is not displayed.
      */
-    public void swipeFromRightToLeft() {
+    public void swipeCards() {
             waitForElementToAppear(lblSwipeHorizontal);
         try{
             int i = 0;
@@ -60,19 +59,28 @@ public class SwipeScreen extends BaseScreen {
                 System.out.println("\tCard: " + (i+1) + " displayed ");
                 saveElementId();
                 swipeHorizontal(nextCardElements, actualCardElements);
-                System.out.println("Swiped from right to left successfully.");
                 i ++;
+                if(isElementVisible(nextCardElements)){
+                    System.out.println("Swiped from right to left successfully.");
+                }else {
+                    System.out.println("This is the last card.");
+                    break;
+                }
             }
         } catch (Exception e) {
             System.out.println("No more cards to swipe.");
         }
     }
 
+    /**
+     * This method saves the ID of the actual card element.
+     * It checks if the element is visible before attempting to retrieve its ID.
+     */
     public void saveElementId() {
         try {
             if (isElementVisible(actualCardElements)) {
                 String elementId = ((RemoteWebElement) actualCardElements).getId();
-                textActualCard.add(elementId);
+                cardElementIds.add(elementId);
                 isCardHidden();
             } else {
                 System.out.println("The element is not visible.");
@@ -81,33 +89,16 @@ public class SwipeScreen extends BaseScreen {
             System.out.println("Error retrieving element ID: " + e.getMessage());
         }
     }
-//
-//    public void getTextCurrentCard() {
-//        try {
-//            if (isElementVisible(actualCardElements)) {
-//                String elementId = ((RemoteWebElement) actualCardElements).getId();
-//                textActualCard.add(elementId);
-//                System.out.println(textActualCard);
-//                System.out.println("Current card elementId: " + elementId);
-//            } else {
-//                textActualCard.get(textActualCard.indexOf(actualCardElements.getDomAttribute("elementId"))-1);
-//                System.out.println("The current card is not visible.");
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Error. "+ e);
-//        }
-//    }
 
     /**
-     * Este metodo se utiliza paraque compruebe que la tarjeta antigua está oculta.
+     * This method checks if the actual card is hidden.
      */
     public void isCardHidden() {
         try{
            if(isElementVisible(actualCardElements)) {
-               for (int i = 0; i < textActualCard.size(); i++) {
-                   String id = textActualCard.get(i);
-                   if (i == textActualCard.size() - 2) {
-                       System.out.println("La carta con el ID " + id + " está oculta.");
+               for (int i = 0; i < cardElementIds.size(); i++) {
+                   if (i == cardElementIds.size() - 2) {
+                       System.out.println("\tCard: " + (i+1) + " is hidden.");
                    }
                }
            }
@@ -121,10 +112,17 @@ public class SwipeScreen extends BaseScreen {
      */
     public boolean isLastCardDisplayed() {
         try {
-            return lastCardElement.isDisplayed();
+            return isElementVisible(lastCardElement);
         } catch (NoSuchElementException e) {
             System.out.println("The last card is not displayed.");
             return false;
+        }
+    }
+
+    public void swipeBottomToTop() {
+        while (!isElementVisible(lblYouFoundMe)) {
+            swipeVertical();
+            System.out.println("Swiped from bottom to top successfully.");
         }
     }
 }
