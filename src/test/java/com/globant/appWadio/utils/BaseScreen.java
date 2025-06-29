@@ -19,6 +19,7 @@ public class BaseScreen {
     public AppiumDriver driver;
     protected static final int TIMEOUT = 10;
     protected WebDriverWait wait;
+    private static final PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
 
     public BaseScreen(AppiumDriver driver){
         this.driver = driver;
@@ -45,11 +46,11 @@ public class BaseScreen {
         int centerX = element.getRect().getX() + element.getRect().getWidth() / 2;
         int centerY = element.getRect().getY() + element.getRect().getHeight() / 2;
 
-        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence tapSequence = new Sequence(finger, 1)
-                .addAction(finger.createPointerMove(Duration.ofMillis(0), PointerInput.Origin.viewport(), centerX, centerY))//Aquí me muevo hacia el elemento
+                .addAction(finger.createPointerMove(Duration.ofMillis(0),
+                        PointerInput.Origin.viewport(), centerX, centerY))
                 .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
-                .addAction(new Pause(finger, Duration.ofMillis(125))) // Pausa para simular un toque
+                .addAction(new Pause(finger, Duration.ofMillis(125)))
                 .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         driver.perform(List.of(tapSequence));
     }
@@ -58,15 +59,14 @@ public class BaseScreen {
      * This method is used to swipe a finger from bottom to top.
      */
     public void swipeVertical() {
-       PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
-        Point start = new Point(435, 1935);
-        Point end = new Point(435, 348);
+        Point start = new Point(540, 2139);
+        Point end = new Point(540, 423);
         Sequence swipe = new Sequence(finger, 1)
                 .addAction(finger.createPointerMove(Duration.ofMillis(0),
-                PointerInput.Origin.viewport(), start.getX(), start.getY()))
+                        PointerInput.Origin.viewport(), start.getX(), start.getY()))
                 .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
                 .addAction(finger.createPointerMove(Duration.ofMillis(1000),
-                PointerInput.Origin.viewport(), end.getX(), end.getY()))
+                        PointerInput.Origin.viewport(), start.getX(), end.getY()))
                 .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         driver.perform(List.of(swipe));
     }
@@ -79,7 +79,6 @@ public class BaseScreen {
         int centerYElement1 = element1.getRect().getY() + element1.getRect().getHeight() / 2;
         int centerXElement2 = element2.getRect().getX() + element2.getRect().getWidth() / 2;
 
-        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence swipe = new Sequence(finger, 1)
                 .addAction(finger.createPointerMove(Duration.ofMillis(0),
                         PointerInput.Origin.viewport(), centerXElement1, centerYElement1))
@@ -88,5 +87,16 @@ public class BaseScreen {
                         PointerInput.Origin.viewport(), centerXElement2, centerYElement1))
                 .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         driver.perform(List.of(swipe));
+    }
+
+    /**
+     * This method is used to check if an element is displayed.
+     */
+    public boolean isElementVisible(WebElement element) {
+        try {
+            return element.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
